@@ -1,6 +1,10 @@
 #include <stdint.h>
-#define TRIG_PIN 5
-#define ECHO_PIN 6
+#define TRIG_PIN 1
+#define ECHO_PIN 3
+
+int8_t threshold = 20;
+bool pumpOn;
+
 
 void setup() {
   Serial.begin(115200);
@@ -24,12 +28,32 @@ long readDistanceCM() {
   return distance;
 }
 
+
+
 void loop() {
   long distance = readDistanceCM();
 
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
+  if (distance <= 2 || distance > 400) {
+    delay(100);
+    return;
+  }
+
+  if (distance >= (20 + threshold)) {
+    if (!pumpOn) {  
+      pumpOn = true;
+      Serial.print("pump on\n distance: ");
+      Serial.print(distance);
+      Serial.print(" cm \n");
+    }
+  }
+  else if (distance < 20) {
+    if (pumpOn) {   
+      pumpOn = false;
+      Serial.print("pump off\n distance: ");
+      Serial.print(distance);
+      Serial.print(" cm \n");
+    }
+  }
 
   delay(100);
 }
