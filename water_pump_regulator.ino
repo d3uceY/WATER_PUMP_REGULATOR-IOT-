@@ -8,8 +8,9 @@
 const char *password = "lhs814185";
 const char *ssid = "MTN-LHS";
 
-// this is the mqtt broker, this is just for testing btw
-// it's better to make yours
+// MQTT broker
+// i hope i do not forget to make a server lol
+// i will use this for the test
 const char *mqtt_server = "broker.emqx.io";
 
 WiFiClient espClient;
