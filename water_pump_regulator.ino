@@ -3,6 +3,8 @@
 #define ECHO_PIN 3
 
 int8_t threshold = 20;
+int8_t maxRetries = 8;
+int8_t retryCount = 0;
 bool pumpOn;
 
 
@@ -34,20 +36,27 @@ void loop() {
   long distance = readDistanceCM();
 
   if (distance <= 2 || distance > 400) {
-    delay(100);
+    delay(400);
     return;
   }
 
   if (distance >= (20 + threshold)) {
-    if (!pumpOn) {  
+    retryCount = 0;
+    if (!pumpOn) {
       pumpOn = true;
       Serial.print("pump on\n distance: ");
       Serial.print(distance);
       Serial.print(" cm \n");
     }
-  }
-  else if (distance < 20) {
-    if (pumpOn) {   
+  } else if (distance < 20) {
+    retryCount += 1;
+    if (retryCount < maxRetries) {
+      delay(400);
+      return;
+    } else {
+      retryCount = 0;
+    }
+    if (pumpOn) {
       pumpOn = false;
       Serial.print("pump off\n distance: ");
       Serial.print(distance);
@@ -55,5 +64,9 @@ void loop() {
     }
   }
 
-  delay(100);
+  Serial.print("retries: ");
+  Serial.print(retryCount);
+  Serial.print(" \n");
+
+  delay(400);
 }
