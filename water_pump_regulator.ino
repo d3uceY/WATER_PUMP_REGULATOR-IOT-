@@ -1,6 +1,19 @@
 #include <stdint.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
 #define TRIG_PIN 1
 #define ECHO_PIN 3
+
+// wifi information and shit
+const char *password = "lhs814185";
+const char *ssid = "MTN-LHS";
+
+// this is the mqtt broker, this is just for testing btw
+// it's better to make yours
+const char *mqtt_server = "broker.emqx.io";
+
+WiFiClient espClient;
+PubSubClient client(espClient);
 
 int8_t threshold = 20;
 int8_t maxRetries = 8;
@@ -8,8 +21,50 @@ int8_t retryCount = 0;
 uint8_t delayMillis = 200;
 bool pumpOn;
 
+void reconnectMQTT() {
+
+  while (!client.connected()) {
+
+    Serial.print("Connecting to MQTT...");
+
+    String clientId = "ESP32-" + String((uint32_t)ESP.getEfuseMac(), HEX);
+
+    if (client.connect(clientId.c_str())) {
+
+      Serial.println("Connected!");
+    } else {
+
+      Serial.print("Failed. rc=");
+      Serial.print(client.state());
+      Serial.println(" retrying...");
+      delay(2000);
+    }
+  }
+}
+
+void connectWIFI() {
+  // wifi stuff
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println();
+  Serial.println("Wifi is connected, broski!");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
 void setup() {
   Serial.begin(115200);
+
+  connectWIFI();
+
+  client.setServer(mqtt_server, 1883);
+
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIG_PIN, OUTPUT);
   Serial.print("it has started");
@@ -32,6 +87,20 @@ long readDistanceCM() {
 }
 
 void loop() {
+
+  // reconnect MQTT
+  if (!client.connected()) {
+    reconnectMQTT();
+  }
+
+  client.loop();
+
+  client.publish("deuce/esp32/test", "Hello from ESP32!");
+
+  Serial.println("Message Published!");
+
+  delay(5000);
+
   long distance = readDistanceCM();
 
   if (distance <= 2 || distance > 400) {
