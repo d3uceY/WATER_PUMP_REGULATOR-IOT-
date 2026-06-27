@@ -5,13 +5,14 @@
 int8_t threshold = 20;
 int8_t maxRetries = 8;
 int8_t retryCount = 0;
+uint8_t delayMillis = 200;
 bool pumpOn;
-
 
 void setup() {
   Serial.begin(115200);
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIG_PIN, OUTPUT);
+  Serial.print("it has started");
 }
 
 long readDistanceCM() {
@@ -30,13 +31,11 @@ long readDistanceCM() {
   return distance;
 }
 
-
-
 void loop() {
   long distance = readDistanceCM();
 
   if (distance <= 2 || distance > 400) {
-    delay(400);
+    delay(delayMillis);
     return;
   }
 
@@ -51,7 +50,10 @@ void loop() {
   } else if (distance < 20) {
     retryCount += 1;
     if (retryCount < maxRetries) {
-      delay(400);
+      Serial.print("retrying... ");
+      Serial.print(retryCount);
+      Serial.print(" \n");
+      delay(delayMillis);
       return;
     } else {
       retryCount = 0;
@@ -64,9 +66,5 @@ void loop() {
     }
   }
 
-  Serial.print("retries: ");
-  Serial.print(retryCount);
-  Serial.print(" \n");
-
-  delay(400);
+  delay(delayMillis);
 }
