@@ -8,15 +8,19 @@
 const char *password = "lhs814185";
 const char *ssid = "MTN-LHS";
 
-// MQTT broker
-// i hope i do not forget to make a server lol
-// i will use this for the test
-const char *mqtt_server = "broker.emqx.io";
+// i created an MQTT broker, which is included 
+// in this repo as mqtt_broker, so you can run it locally on your machine
+const char *mqtt_server = "192.168.x.x"; // just replace this part with the ip of your pc
+const char *topic_tank_on = "message_tank_on";
+const char *topic_tank_off = "message_tank_off";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
 int8_t threshold = 20;
+
+// i added this because of water turbulence in the pump,
+// so it does not toggle rapidly, my bad if this is a lazy solution
 int8_t maxRetries = 8;
 int8_t retryCount = 0;
 uint8_t delayMillis = 200;
@@ -96,12 +100,6 @@ void loop() {
 
   client.loop();
 
-  client.publish("deuce/esp32/test", "Hello from ESP32!");
-
-  Serial.println("Message Published!");
-
-  delay(5000);
-
   long distance = readDistanceCM();
 
   if (distance <= 2 || distance > 400) {
@@ -113,6 +111,7 @@ void loop() {
     retryCount = 0;
     if (!pumpOn) {
       pumpOn = true;
+      client.publish(topic_tank_on, "1");
       Serial.print("pump on\n distance: ");
       Serial.print(distance);
       Serial.print(" cm \n");
@@ -130,6 +129,7 @@ void loop() {
     }
     if (pumpOn) {
       pumpOn = false;
+      client.publish(topic_tank_off, "1");
       Serial.print("pump off\n distance: ");
       Serial.print(distance);
       Serial.print(" cm \n");

@@ -9,7 +9,7 @@ import (
 func ConnectMQTT() mqtt.Client {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker("tcp://localhost:1883")
-	opts.SetClientID("my_mqtt_client")
+	opts.SetClientID("go_mqtt_broker_client")
 
 	client := mqtt.NewClient(opts)
 

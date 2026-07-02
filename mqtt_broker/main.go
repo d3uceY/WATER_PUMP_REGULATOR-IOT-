@@ -15,6 +15,8 @@ func main() {
 		panic(err)
 	}
 
+	mqtt.StartBroker()
+
 	client := mqtt.ConnectMQTT()
 	defer client.Disconnect(250)
 
