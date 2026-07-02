@@ -1,3 +1,5 @@
+github.com/KARTIKrocks/gowhatsapp v0.1.0 h1:4hJMLIDAsxt6JwFFZebTmDnlCUGFoIelEfu7SiZ/JQA=
+github.com/KARTIKrocks/gowhatsapp v0.1.0/go.mod h1:Kyj9qaqH5tmL0QR93+NnHvCOvj0dUFLJxlJpdUjq9aQ=
 github.com/eclipse/paho.mqtt.golang v1.5.1 h1:/VSOv3oDLlpqR2Epjn1Q7b2bSTplJIeV2ISgCl2W7nE=
 github.com/eclipse/paho.mqtt.golang v1.5.1/go.mod h1:1/yJCneuyOoCOzKSsOTUc0AJfpsItBGWvYpBLimhArU=
 github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
