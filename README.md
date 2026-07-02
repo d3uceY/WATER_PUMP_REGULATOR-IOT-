@@ -81,7 +81,19 @@ const char *mqtt_server = "192.168.x.x"; // your machine's IP
 
 make sure your machine and the ESP32 are on the same WiFi network or this won't work, broski.
 
-### 5. run the Go server
+### 5. open port 1883 on windows firewall
+
+this one got me. the ESP32 kept failing to connect with `rc=-2` and i could not figure out why for a while. turns out Windows Firewall was just blocking the port the whole time, lol.
+
+open PowerShell **as administrator** (right-click → run as administrator) and run:
+
+```powershell
+New-NetFirewallRule -DisplayName "MQTT Broker" -Direction Inbound -Protocol TCP -LocalPort 1883 -Action Allow
+```
+
+you only need to do this once. if you skip this step, the ESP32 will not connect, full stop.
+
+### 6. run the Go server
 
 ```bash
 go run .
