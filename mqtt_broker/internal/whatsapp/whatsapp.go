@@ -9,15 +9,21 @@ import (
 	whatsapp "github.com/KARTIKrocks/gowhatsapp"
 )
 
-func SendMessage(to string, message string) error {
-	client, err := whatsapp.New(whatsapp.Config{
+var client *whatsapp.Client
+
+func Init() error {
+	var err error
+	client, err = whatsapp.New(whatsapp.Config{
 		PhoneNumberID: config.Get("WHATSAPP_PHONE_NUMBER_ID"),
 		AccessToken:   config.Get("WHATSAPP_ACCESS_TOKEN"),
 	})
 	if err != nil {
 		return fmt.Errorf("failed to create whatsapp client: %w", err)
 	}
+	return nil
+}
 
+func SendMessage(to string, message string) error {
 	ctx := context.Background()
 
 	res, err := client.SendText(ctx, to, message)
