@@ -3,6 +3,8 @@ package mqtt
 import (
 	"fmt"
 
+	"mqtt_broker/internal/telegram"
+
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -25,12 +27,15 @@ func ConnectMQTT() mqtt.Client {
 	return client
 }
 
-func RunSubscriptions(client mqtt.Client) {
-	topics := []string{"message_pump_off", "message_pump_on"}
+func RunSubscriptions(client mqtt.Client, telegramClient *telegram.TelegramClient) {
+	topics := []string{topicPumpOff, topicPumpOn}
 
 	for _, topic := range topics {
 		token := client.Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {
 			fmt.Printf("Received message on topic %s: %s\n", msg.Topic(), string(msg.Payload()))
+			if err := sendTopicMessage(msg.Topic(), telegramClient); err != nil {
+				fmt.Printf("Failed to send topic message: %v\n", err)
+			}
 		})
 		token.Wait()
 		if err := token.Error(); err != nil {

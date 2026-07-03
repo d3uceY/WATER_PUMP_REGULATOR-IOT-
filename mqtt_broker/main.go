@@ -25,7 +25,7 @@ func main() {
 	client := mqtt.ConnectMQTT()
 	defer client.Disconnect(250)
 
-	mqtt.RunSubscriptions(client)
+	mqtt.RunSubscriptions(client, &telegramClient)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Server is running. no cap on god, bro")
