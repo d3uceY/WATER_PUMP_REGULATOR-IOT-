@@ -14,8 +14,8 @@ const char *ssid = "MTN-LHS";
 // idk about you though, not my problem if you can't figure it out, bro
 // wait, i just leaked my IP. Omo
 const char *mqtt_server = "192.168.100.7";
-const char *topic_tank_on = "message_pump_on";
-const char *topic_tank_off = "message_pump_off";
+const char *topic_pump_on = "message_pump_on";
+const char *topic_pump_off = "message_pump_off";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -114,7 +114,7 @@ void loop() {
     retryCount = 0;
     if (!pumpOn) {
       pumpOn = true;
-      client.publish(topic_tank_on, "1");
+      client.publish(topic_pump_on, "1");
       Serial.print("pump on\n distance: ");
       Serial.print(distance);
       Serial.print(" cm \n");
@@ -132,7 +132,7 @@ void loop() {
     }
     if (pumpOn) {
       pumpOn = false;
-      client.publish(topic_tank_off, "1");
+      client.publish(topic_pump_off, "1");
       Serial.print("pump off\n distance: ");
       Serial.print(distance);
       Serial.print(" cm \n");
