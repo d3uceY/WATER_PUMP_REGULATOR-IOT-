@@ -14,6 +14,16 @@ var (
 	client *whatsapp.Client
 )
 
+type TopicsType struct {
+	PumpOn  string
+	PumpOff string
+}
+
+var topics = TopicsType{
+	PumpOn:  "message_pump_on",
+	PumpOff: "message_pump_off",
+}
+
 func Init() error {
 	var err error
 	client, err = whatsapp.New(whatsapp.Config{
@@ -24,6 +34,20 @@ func Init() error {
 		return fmt.Errorf("failed to create whatsapp client: %w", err)
 	}
 	return nil
+}
+
+func sendTopicMessage(topic string) {
+	switch topic {
+
+	case topics.PumpOn:
+		message := "pump is turned on"
+		SendMessage(message)
+
+	case topics.PumpOff:
+		message := "pump is turned off"
+		SendMessage(message)
+
+	}
 }
 
 func SendMessage(message string) error {
