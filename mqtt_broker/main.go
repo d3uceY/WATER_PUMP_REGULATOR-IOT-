@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
+
 	"mqtt_broker/internal/config"
 	"mqtt_broker/internal/mqtt"
+	"mqtt_broker/internal/telegram"
 	"mqtt_broker/internal/whatsapp"
 )
 
@@ -14,6 +16,9 @@ func main() {
 	if err := whatsapp.Init(); err != nil {
 		panic(err)
 	}
+
+	telegramClient := telegram.TelegramClient{}
+	telegramClient.InitTelegram()
 
 	mqtt.StartBroker()
 
