@@ -9,7 +9,10 @@ import (
 	whatsapp "github.com/KARTIKrocks/gowhatsapp"
 )
 
-var client *whatsapp.Client
+var (
+	to     = config.Get("WHATSAPP_RECIPIENT_NUMBER")
+	client *whatsapp.Client
+)
 
 func Init() error {
 	var err error
@@ -23,7 +26,7 @@ func Init() error {
 	return nil
 }
 
-func SendMessage(to string, message string) error {
+func SendMessage(message string) error {
 	ctx := context.Background()
 
 	res, err := client.SendText(ctx, to, message)
