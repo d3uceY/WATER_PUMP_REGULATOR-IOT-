@@ -24,6 +24,31 @@ i also added a retry system on the Arduino side because the water turbulence was
 
 ---
 
+## pin diagram
+
+this is the wiring i used in the sketch. nothing fancy, just don't mix up trig and echo or you will be debugging the wrong thing for no reason. I did that
+
+```text
+ESP32                         HC-SR04
+-----                         -------
+5V / VIN  ------------------> VCC
+GND      ------------------> GND
+GPIO 1   ------------------> TRIG
+GPIO 3   <------------------ ECHO
+```
+I did not do this, btw because i am lazy and i fried some pins😂😂😂
+small warning: the HC-SR04 echo pin can output 5V, and most ESP32 C3 pins want 3.3V. use a voltage divider on `ECHO` if your sensor board does not already handle that. something like this works: 
+
+```text
+HC-SR04 ECHO ---- 1k resistor ----+---- ESP32 GPIO 3
+                                  |
+                              2k resistor
+                                  |
+                                 GND
+```
+
+---
+
 ## tools i had to install
 
 ### Arduino side
