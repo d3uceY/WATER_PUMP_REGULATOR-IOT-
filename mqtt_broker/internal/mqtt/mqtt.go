@@ -26,7 +26,7 @@ func ConnectMQTT() mqtt.Client {
 }
 
 func RunSubscriptions(client mqtt.Client) {
-	topics := []string{"message_tank_off", "message_tank_on"}
+	topics := []string{"message_pump_off", "message_pump_on"}
 
 	for _, topic := range topics {
 		token := client.Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {

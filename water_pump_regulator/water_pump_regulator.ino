@@ -14,8 +14,8 @@ const char *ssid = "MTN-LHS";
 // idk about you though, not my problem if you can't figure it out, bro
 // wait, i just leaked my IP. Omo
 const char *mqtt_server = "192.168.100.7";
-const char *topic_tank_on = "message_tank_on";
-const char *topic_tank_off = "message_tank_off";
+const char *topic_tank_on = "message_pump_on";
+const char *topic_tank_off = "message_pump_off";
 
 WiFiClient espClient;
 PubSubClient client(espClient);

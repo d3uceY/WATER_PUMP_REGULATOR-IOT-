@@ -6,7 +6,7 @@ so basically i built a water tank monitor that uses an ESP32 and an ultrasonic s
 
 ## how it works
 
-the ESP32 reads the distance from the water surface using a HC-SR04 ultrasonic sensor. if the water is low, it publishes to `message_tank_on` (turn pump on). if the water is high enough, it publishes to `message_tank_off` (turn pump off).
+the ESP32 reads the distance from the water surface using a HC-SR04 ultrasonic sensor. if the water is low, it publishes to `message_pump_on` (turn pump on). if the water is high enough, it publishes to `message_pump_off` (turn pump off).
 
 the Go server runs an embedded MQTT broker so the ESP32 connects directly to your machine. the server subscribes to both topics and can forward the messages to WhatsApp using the Meta Cloud API.
 
