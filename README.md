@@ -46,6 +46,9 @@ HC-SR04 ECHO ---- 1k resistor ----+---- ESP32 GPIO 3
                                   |
                                  GND
 ```
+This is the Pin layout for the ESP 32 C3 Super Mini used in this project
+
+<img width="715" height="667" alt="image" src="https://github.com/user-attachments/assets/d96fb363-47e1-4f0f-a983-b9c3dd850bd8" />
 
 ---
 
