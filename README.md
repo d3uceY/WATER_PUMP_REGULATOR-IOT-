@@ -36,8 +36,8 @@ GND      ------------------> GND
 GPIO 1   ------------------> TRIG
 GPIO 3   <------------------ ECHO
 ```
-I did not do this, btw because i am lazy and i fried some pins😂😂😂
-small warning: the HC-SR04 echo pin can output 5V, and most ESP32 C3 pins want 3.3V. use a voltage divider on `ECHO` if your sensor board does not already handle that. something like this works: 
+small warning: the HC-SR04 echo pin can output 5V, and most ESP32 C3 pins want 3.3V. use a voltage divider on `ECHO` if your sensor board does not already handle that (I did not do this, btw because i am lazy and i fried some pins😂😂😂)
+something like this works: 
 
 ```text
 HC-SR04 ECHO ---- 1k resistor ----+---- ESP32 GPIO 3
