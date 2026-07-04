@@ -11,7 +11,6 @@ const char *ssid = "MTN-LHS";
 // i created an MQTT broker, which is included 
 // in this repo as mqtt_broker, so you can run it locally on your machine
 // to get the IP for windows, i ran ipconfig.
-// idk about you though, not my problem if you can't figure it out, bro
 // wait, i just leaked my IP. Omo
 const char *mqtt_server = "192.168.100.7";
 const char *topic_pump_on = "message_pump_on";

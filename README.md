@@ -18,8 +18,8 @@ i also added a retry system on the Arduino side because the water turbulence was
 
 ## the parts
 
-- **ESP32** — the microcontroller
-- **HC-SR04** — ultrasonic distance sensor (TRIG on pin 1, ECHO on pin 3)
+- **ESP32** - the microcontroller
+- **HC-SR04** - ultrasonic distance sensor (TRIG on pin 1, ECHO on pin 3)
 - a pump or relay or whatever you're trying to control
 
 ---
@@ -53,8 +53,8 @@ HC-SR04 ECHO ---- 1k resistor ----+---- ESP32 GPIO 3
 
 ### Arduino side
 - [Arduino IDE](https://www.arduino.cc/en/software)
-- **WiFi** — comes with the ESP32 board package
-- **PubSubClient** — MQTT client library for Arduino. install it from the library manager in the IDE
+- **WiFi** - comes with the ESP32 board package
+- **PubSubClient** - MQTT client library for Arduino. install it from the library manager in the IDE
 
 ### Go server side
 you need Go installed. then run this in the `mqtt_broker` folder:
@@ -64,11 +64,11 @@ go mod tidy
 ```
 
 that pulls everything. the main packages are:
-- `mochi-mqtt/server` — this is the embedded MQTT broker, so you don't need to install mosquitto or anything external
-- `paho.mqtt.golang` — the Go MQTT client that connects to the broker
-- `gowhatsapp` — for sending WhatsApp messages via the Meta Cloud API
-- Telegram Bot API — for sending Telegram messages to whoever has chatted with your bot
-- `godotenv` — loads credentials from a `.env` file so i don't have to hardcode them
+- `mochi-mqtt/server` - this is the embedded MQTT broker, so you don't need to install mosquitto or anything external
+- `paho.mqtt.golang` - the Go MQTT client that connects to the broker
+- `gowhatsapp` - for sending WhatsApp messages via the Meta Cloud API
+- Telegram Bot API - for sending Telegram messages to whoever has chatted with your bot
+- `godotenv` - loads credentials from a `.env` file so i don't have to hardcode them
 
 ---
 
