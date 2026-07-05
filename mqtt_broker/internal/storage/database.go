@@ -3,23 +3,30 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	_ "modernc.org/sqlite"
 )
 
 var DB *sql.DB
 
-func InitDB(path string) error {
-	var err error
-	DB, err = sql.Open("sqlite", path)
+func getAppDataDir() string {
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		panic(err)
+	}
+	return filepath.Join(dir, "d3uc3y", "water_pump_regulator", "database", "store.db")
+}
+
+func InitDB() error {
+
+	path := getAppDataDir()
+	DB, err := sql.Open("sqlite", path)
+
 	if err != nil {
 		return err
 	}
-
-	// i mean, it is already a single writer but
-	// i feel special when i just write unecessary shit
-	DB.SetMaxOpenConns(1)
-	DB.SetMaxIdleConns(1)
 
 	fmt.Println("DB initialized on Bro")
 
