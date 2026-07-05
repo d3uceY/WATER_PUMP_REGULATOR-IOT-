@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"sync"
 
-	config "mqtt_broker/internal/config"
+	"mqtt_broker/internal/config"
+	store "mqtt_broker/internal/storage"
 )
 
 type GetUpdatesResponse struct {
@@ -85,17 +86,34 @@ func (t *TelegramClient) GetChatIDs() ([]int64, error) {
 		return nil, err
 	}
 
-	seen := make(map[int64]bool)
-	chatIDs := make([]int64, 0)
+	if err != nil {
+		return nil, err
+	}
 
 	for _, update := range updates.Result {
 		chatID := update.Message.Chat.ID
-		if chatID == 0 || seen[chatID] {
+		if chatID == 0 || store.ChatIdExists(int64(chatID)) {
 			continue
 		}
 
-		seen[chatID] = true
-		chatIDs = append(chatIDs, chatID)
+		// i will insert the necessary data into the db here
+		data := store.TelegramChat{
+			ChatId:   int64(chatID),
+			Username: update.Message.Chat.Username,
+		}
+		store.InsertChat(data)
+	}
+
+	chats, err := store.GetChats()
+
+	if err != nil {
+		return nil, err
+	}
+
+	chatIDs := make([]int64, len(chats))
+
+	for _, chat := range chats {
+		chatIDs = append(chatIDs, chat.ChatId)
 	}
 
 	return chatIDs, nil
