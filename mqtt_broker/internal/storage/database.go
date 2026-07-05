@@ -16,10 +16,10 @@ func getAppDataDir() string {
 	if err != nil {
 		panic(err)
 	}
-	path := filepath.Join(dir, "d3uc3y", "water_pump_regulator", "database", "store");
+	path := filepath.Join(dir, "d3uc3y", "water_pump_regulator", "database")
 
-	os.MkdirAll(path, 0755);
-	
+	os.MkdirAll(path, 0755)
+
 	return path
 }
 
@@ -27,7 +27,7 @@ func InitDB() error {
 
 	path := getAppDataDir()
 	fmt.Printf(path)
-	DB, err := sql.Open("sqlite", path)
+	DB, err := sql.Open("sqlite", filepath.Join(path, "store.db"))
 
 	if err != nil {
 		return err
