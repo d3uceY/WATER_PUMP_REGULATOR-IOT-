@@ -2,6 +2,11 @@
 
 so basically i built a water tank monitor that uses an ESP32 and an ultrasonic sensor to check if the tank is full or empty, then sends an MQTT message so a Go server can do something about it. right now the Go server sends the alert to WhatsApp and Telegram, because apparently one notification app was not enough.
 
+I drew this diagram. Best way i can explain wtf this is:
+
+<img width="1154" height="626" alt="image" src="https://github.com/user-attachments/assets/f1ab91b5-8546-4908-a33d-415f8ca68d24" />
+
+
 ---
 
 ## how it works
