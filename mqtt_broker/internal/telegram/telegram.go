@@ -86,10 +86,6 @@ func (t *TelegramClient) GetChatIDs() ([]int64, error) {
 		return nil, err
 	}
 
-	if err != nil {
-		return nil, err
-	}
-
 	for _, update := range updates.Result {
 		chatID := update.Message.Chat.ID
 		if chatID == 0 || store.ChatIdExists(int64(chatID)) {
@@ -101,7 +97,9 @@ func (t *TelegramClient) GetChatIDs() ([]int64, error) {
 			ChatId:   int64(chatID),
 			Username: update.Message.Chat.Username,
 		}
-		store.InsertChat(data)
+		if err := store.InsertChat(data); err != nil {
+			return nil, err
+		}
 	}
 
 	chats, err := store.GetChats()
@@ -110,7 +108,7 @@ func (t *TelegramClient) GetChatIDs() ([]int64, error) {
 		return nil, err
 	}
 
-	chatIDs := make([]int64, len(chats))
+	chatIDs := make([]int64, 0, len(chats))
 
 	for _, chat := range chats {
 		chatIDs = append(chatIDs, chat.ChatId)

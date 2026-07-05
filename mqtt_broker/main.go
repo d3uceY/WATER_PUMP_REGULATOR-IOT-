@@ -14,7 +14,10 @@ import (
 func main() {
 
 	// sqlite db init
-	storage.InitDB()
+	if err := storage.InitDB(); err != nil {
+		panic(err)
+	}
+	storage.CreateTables()
 
 	// loads env into memory
 	config.Load()
