@@ -15,6 +15,8 @@ the ESP32 reads the distance from the water surface using a HC-SR04 ultrasonic s
 
 the Go server runs an embedded MQTT broker so the ESP32 connects directly to your machine. the server subscribes to both topics and forwards the messages to WhatsApp using the Meta Cloud API, and to Telegram using a bot you make yourself.
 
+for Telegram, the app checks the bot updates, grabs the chat id from whoever has messaged the bot, then saves that chat id in a little SQLite database. so yeah, the chat id is stored. once it has it, it can keep using that same chat id for pump alerts instead of begging Telegram for it every single time.
+
 when the broker receives `message_pump_on`, it sends `pump is turned on`. when it receives `message_pump_off`, it sends `pump is turned off`.
 
 i also added a retry system on the Arduino side because the water turbulence was making the pump toggle on and off rapidly. not the cleanest fix but it works.
@@ -76,6 +78,7 @@ that pulls everything. the main packages are:
 - `paho.mqtt.golang` - the Go MQTT client that connects to the broker
 - `gowhatsapp` - for sending WhatsApp messages via the Meta Cloud API
 - Telegram Bot API - for sending Telegram messages to whoever has chatted with your bot
+- `modernc.org/sqlite` - stores the Telegram chat ids locally so the bot remembers who to annoy
 - `godotenv` - loads credentials from a `.env` file so i don't have to hardcode them
 
 ---
@@ -139,6 +142,8 @@ this part is actually pretty chill:
 
 that last step matters because the app gets chat IDs from Telegram updates. if nobody has messaged the bot yet, the Go server has no chat IDs to send to, so it just has nobody to bother.
 
+once the app sees your chat id, it stores it in SQLite under your user config folder at `d3uc3y/water_pump_regulator/database/store.db`. so most times you only need to message the bot once. after that, the saved chat id is used when pump alerts come in.
+
 if you want the bot to notify a group, add the bot to the group and send a message in that group so Telegram creates an update for it. after that, the bot can pick up the group chat id too.
 
 ### 5. find your machine's local IP
@@ -195,6 +200,7 @@ open `water_pump_regulator.ino` in the Arduino IDE and upload it.
 │   └── internal/
 │       ├── config/       # loads .env
 │       ├── mqtt/         # embedded broker + subscriber + notification router thing
+│       ├── storage/      # SQLite stuff + saved Telegram chat ids
 │       ├── telegram/     # sends Telegram bot messages
 │       └── whatsapp/     # sends WhatsApp messages
 └── water_pump_regulator/
