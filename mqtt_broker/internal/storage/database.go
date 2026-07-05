@@ -3,7 +3,6 @@ package storage
 import (
 	"database/sql"
 	"fmt"
-	"sql"
 
 	_ "modernc.org/sqlite"
 )
@@ -17,7 +16,7 @@ func InitDB(path string) error {
 		return err
 	}
 
-    // i mean, it is already a single writer but
+	// i mean, it is already a single writer but
 	// i feel special when i just write unecessary shit
 	DB.SetMaxOpenConns(1)
 	DB.SetMaxIdleConns(1)
@@ -27,14 +26,18 @@ func InitDB(path string) error {
 	return DB.Ping()
 }
 
+// creates the tables on server load
 func CreateTables() {
 	query := `
-	CREATE TABLE IF NOT EXISTS telegram_chat_ids (
+	CREATE TABLE IF NOT EXISTS telegram_chats (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		userame TEXT,
-		chat_id INTEGER,
+		username TEXT,
+		chat_id INTEGER
 	);
-	`
+
+	CREATE INDEX IF NOT EXISTS idx_telegram_chats_chat_id
+		 ON telegram_chats(chat_id);
+     `
 
 	_, err := DB.Exec(query)
 	if err != nil {
@@ -43,6 +46,7 @@ func CreateTables() {
 	}
 }
 
+// runs migrations (obviously)
 func RunMigrations() {
-    // maybe when i get something to migrate lol (because most times i always need to)
+	// maybe when i get something to migrate lol (because most times i always need to)
 }
