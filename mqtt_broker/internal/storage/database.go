@@ -16,8 +16,10 @@ func getAppDataDir() string {
 	if err != nil {
 		panic(err)
 	}
-	path := filepath.Join(dir, "d3uc3y", "water_pump_regulator", "database", "store")
-	os.MkdirAll(path, 0755)
+	path := filepath.Join(dir, "d3uc3y", "water_pump_regulator", "database", "store");
+
+	os.MkdirAll(path, 0755);
+	
 	return path
 }
 
