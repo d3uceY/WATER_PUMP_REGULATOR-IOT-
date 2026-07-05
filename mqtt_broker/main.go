@@ -23,7 +23,7 @@ func main() {
 	if err := whatsapp.Init(); err != nil {
 		panic(err)
 	}
-	
+
 	// some telegram shit
 	telegramClient := telegram.TelegramClient{}
 	telegramClient.InitTelegram()
@@ -32,6 +32,7 @@ func main() {
 	mqtt.StartBroker()
 
 	// the funny thing is, this app is both a broker and an MQTT client at the same time
+	// so basically, it is it's own client
 	client := mqtt.ConnectMQTT()
 	defer client.Disconnect(250)
 
